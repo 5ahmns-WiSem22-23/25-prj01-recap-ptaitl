@@ -1,4 +1,4 @@
-# 25-HelloWorld-ptaitl
+# 25-prj01-recap-ptaitl
 
 ## Kurzbeschreibung
 
