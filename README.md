@@ -4,6 +4,15 @@
 
 ...
 
+## Zusatzfeatures
+
+- Camera SmoothDamping
+- Car Reverse Rotation Adjustment
+- SpeedUp, SlowDown & Death Trap Zones (Zones Controller with Custom Inspector)
+- Timer & Winning Logic
+- Out of bounce effect
+- Music (incl. destroy logic)
+
 ## Projektkonfiguration
 
 - PC, Mac & Linux Standalone
