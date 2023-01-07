@@ -101,7 +101,7 @@ public class CarController : MonoBehaviour
         if (transform.childCount != 0)
         {
             Destroy(transform.GetChild(0).gameObject);
-            GameSceneManager.score+=5;
+            GameSceneManager.score++;
             gameManager.spawnPickUp();
             drivingSpeed = tempDrivingSpeed;
         }
