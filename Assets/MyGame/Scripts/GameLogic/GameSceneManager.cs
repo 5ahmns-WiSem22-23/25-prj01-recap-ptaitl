@@ -9,7 +9,7 @@ public class GameSceneManager : MonoBehaviour
     [SerializeField]
     GameObject pickUp;
     [SerializeField]
-    TextMesh scoreDisplay;
+    Text scoreDisplay;
     [SerializeField]
     Text gameTimeDisplay;
     public static int score;
@@ -45,8 +45,6 @@ public class GameSceneManager : MonoBehaviour
         // Using predefined spawn points instead of randomly generated positions prevents a spawn point from spawning too close to the target location or on another static game element.
         GameObject spawnedPickUp = Instantiate(pickUp, spawnPoints.transform.GetChild(Random.Range(0, spawnPoints.transform.childCount - 1)).transform.position, Quaternion.identity);
 
-
-        // TODO Der Raycast funktioniert noch nicht
 
         // If the spawned pickup is spawned on the player it is immediately destroyed again and spawned in a different position.
         while (Physics2D.Raycast(spawnedPickUp.transform.position, -Vector2.up, 0.5f).collider.tag == "Player")

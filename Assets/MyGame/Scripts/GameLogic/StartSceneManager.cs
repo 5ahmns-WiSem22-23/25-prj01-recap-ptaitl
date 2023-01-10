@@ -40,11 +40,9 @@ public class StartSceneManager : MonoBehaviour
                 break;
         }
 
-        // Depending on whether it is the first game or not, the score will be displayed.
-        scoreDisplay.text = GlobalGameManager.currentGameState == GlobalGameManager.GameStates.FirstGame ? "" : GameSceneManager.score.ToString();
-
-        // Read highscore from PlayerPrefs.
-        highscoreDisplay.text = highscore.ToString();
+        // The scores are inserted into the string by string interpolation.
+        scoreDisplay.text = $"Score: {GameSceneManager.score.ToString()}";
+        highscoreDisplay.text = $"Highscore: {highscore.ToString()}";
     }
 
     // When the GameScene is loaded, the score has to be reset.
@@ -52,10 +50,5 @@ public class StartSceneManager : MonoBehaviour
     {
         GameSceneManager.score = 0;
         SceneManager.LoadScene("GameScene");
-    }
-
-    public void Exit()
-    {
-        Application.Quit();
     }
 }

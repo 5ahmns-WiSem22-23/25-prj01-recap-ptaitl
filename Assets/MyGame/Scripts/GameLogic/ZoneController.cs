@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.TextCore;
 
 public class ZoneController : MonoBehaviour
 {
@@ -15,8 +17,15 @@ public class ZoneController : MonoBehaviour
     public float slowDownRate;
     public int healthDeduction;
 
+    public string zoneId;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    void Start()
+    {
+        zoneId = generateId(20);
+    }
+
+
+    void OnTriggerEnter2D(Collider2D collision)
     {
         // Execute only if triggered with the player.
         if (collision.transform.CompareTag("Player"))
@@ -27,9 +36,11 @@ public class ZoneController : MonoBehaviour
             switch (zoneTyp)
             {
                 case ZoneTypes.SlowDown:
+                    if (zoneId == carController.previousZoneId) return;
                     carController.SlowDown(slowDownRate);
                     break;
                 case ZoneTypes.SpeedUp:
+                    if (zoneId == carController.previousZoneId) return;
                     carController.SpeedUp(speedUpRate);
                     break;
                 case ZoneTypes.Kill:
@@ -39,7 +50,24 @@ public class ZoneController : MonoBehaviour
                     carController.DropOff();
                     break;
             }
+
+            // As soon as the car triggers a zone, the Id is set as the previous Id.
+            carController.previousZoneId = zoneId;
         }
+    }
+
+    // This function returns a random string.
+    string generateId(int length)
+    {
+        string id = "";
+        string glyphs = "abcdefghjklmnopqrstuvwxyz0123456789";
+
+        for (int i = 0; i < length; i++)
+        {
+            id += glyphs[UnityEngine.Random.Range(0, glyphs.Length)];
+        }
+
+        return id;
     }
 
 }

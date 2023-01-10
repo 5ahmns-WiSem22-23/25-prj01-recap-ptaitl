@@ -11,8 +11,12 @@ public class CarController : MonoBehaviour
     float maxDrivingSpeed;
 
     [SerializeField]
-    [Range(0, 10)]
+    [Range(0, 2)]
     float rotationSpeed;
+
+    [SerializeField]
+    [Range(0, 5)]
+    float maxRotationSpeed;
 
     [SerializeField]
     [Range(0, 2)]
@@ -35,6 +39,9 @@ public class CarController : MonoBehaviour
 
     Rigidbody2D ridbody;
 
+    // By tracking the zone ids, for example, a double SpeedUp is prevented.
+    public string previousZoneId;
+
     private void Start()
     {
         ridbody = GetComponent<Rigidbody2D>();
@@ -52,6 +59,13 @@ public class CarController : MonoBehaviour
             GlobalGameManager.currentGameState = GlobalGameManager.GameStates.GameOver;
             SceneManager.LoadScene("StartScene");
         }
+
+        // Allow rotation only when the car is moving.
+        if (ridbody.velocity == Vector2.zero)
+        {
+            transform.rotation = transform.rotation;
+        }
+
     }
 
 
@@ -61,7 +75,10 @@ public class CarController : MonoBehaviour
         float drivingSpeedOverride = Mathf.Clamp(drivingSpeed, 0.3f, maxDrivingSpeed);
 
         // In order for the rotation to work realistically when driving backwards, it must be inverted.
-        float rotationSpeedOverride = Input.GetAxis("Vertical") >= 0 ? rotationSpeed : -rotationSpeed;
+        float rotationSpeedOverride = Input.GetAxis("Vertical") >= 0 ? (rotationSpeed * Input.GetAxis("Vertical") * drivingSpeedOverride) : -(rotationSpeed * Mathf.Abs(Input.GetAxis("Vertical")) * drivingSpeedOverride);
+
+        // By clamping the rotation speed, the player is prevented from becoming infinitely spinning.
+        rotationSpeedOverride = Mathf.Clamp(rotationSpeedOverride, -maxRotationSpeed, maxRotationSpeed);
 
         // By using the rotate method, quaternion conversions can be omitted.
         transform.Rotate(0, 0, -Input.GetAxis("Horizontal") * rotationSpeedOverride);
@@ -98,9 +115,9 @@ public class CarController : MonoBehaviour
     // If the player carries a pickup, it should be destroyed and the player gets faster again.
     public void DropOff()
     {
-        if (transform.childCount != 0)
+        if (transform.childCount != 1)
         {
-            Destroy(transform.GetChild(0).gameObject);
+            Destroy(transform.GetChild(1).gameObject);
             GameSceneManager.score++;
             gameManager.spawnPickUp();
             drivingSpeed = tempDrivingSpeed;
@@ -111,8 +128,8 @@ public class CarController : MonoBehaviour
     public void PickUp(GameObject pickUp)
     {
         pickUp.transform.SetParent(gameObject.transform);
-        pickUp.transform.position = transform.position;
-        pickUp.transform.rotation = transform.rotation;
+        pickUp.transform.localPosition = Vector3.zero;
+        pickUp.transform.localRotation = Quaternion.identity;
         pickUp.transform.localScale *= 0.5f;
         tempDrivingSpeed = drivingSpeed;
         drivingSpeed -= pickUpSlowDown;
