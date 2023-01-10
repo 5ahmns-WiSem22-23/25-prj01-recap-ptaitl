@@ -56,7 +56,7 @@ The game was tested by three classmates who each wrote issues. No bugs were foun
 
 ## Assets
 
-All sprites are either without copyright or have been modified so far that there should be no legal problems.
+All sprites are either copyright free or have been modified to the point where there should be no legal issues.
 
 ## Project configuration
 
