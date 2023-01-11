@@ -21,7 +21,7 @@ public class ZoneController : MonoBehaviour
 
     void Start()
     {
-        zoneId = generateId(20);
+        zoneId = GenerateId(20);
     }
 
 
@@ -57,7 +57,7 @@ public class ZoneController : MonoBehaviour
     }
 
     // This function returns a random string.
-    string generateId(int length)
+    string GenerateId(int length)
     {
         string id = "";
         string glyphs = "abcdefghjklmnopqrstuvwxyz0123456789";

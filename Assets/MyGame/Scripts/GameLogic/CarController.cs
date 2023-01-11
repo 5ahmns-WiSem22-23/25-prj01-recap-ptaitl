@@ -42,7 +42,7 @@ public class CarController : MonoBehaviour
     // By tracking the zone ids, for example, a double SpeedUp is prevented.
     public string previousZoneId;
 
-    private void Start()
+    void Start()
     {
         ridbody = GetComponent<Rigidbody2D>();
         health = maxHealth;
@@ -59,17 +59,10 @@ public class CarController : MonoBehaviour
             GlobalGameManager.currentGameState = GlobalGameManager.GameStates.GameOver;
             SceneManager.LoadScene("StartScene");
         }
-
-        // Allow rotation only when the car is moving.
-        if (ridbody.velocity == Vector2.zero)
-        {
-            transform.rotation = transform.rotation;
-        }
-
     }
 
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         // By clamping the driving speed, the player is prevented from becoming infinitely fast or not moving at all.
         float drivingSpeedOverride = Mathf.Clamp(drivingSpeed, 0.3f, maxDrivingSpeed);
@@ -80,8 +73,12 @@ public class CarController : MonoBehaviour
         // By clamping the rotation speed, the player is prevented from becoming infinitely spinning.
         rotationSpeedOverride = Mathf.Clamp(rotationSpeedOverride, -maxRotationSpeed, maxRotationSpeed);
 
-        // By using the rotate method, quaternion conversions can be omitted.
-        transform.Rotate(0, 0, -Input.GetAxis("Horizontal") * rotationSpeedOverride);
+        // Allow rotation only when the car is moving.
+        if (Input.GetAxis("Vertical") != 0)
+        {
+            // By using the rotate method, quaternion conversions can be omitted.
+            transform.Rotate(0, 0, -Input.GetAxis("Horizontal") * rotationSpeedOverride);
+        }
 
         // The velocity of the rigid body can be used to control the forward and reverse movement.
         ridbody.velocity = transform.rotation * new Vector2(0, Input.GetAxis("Vertical")) * drivingSpeedOverride; ;
@@ -119,7 +116,7 @@ public class CarController : MonoBehaviour
         {
             Destroy(transform.GetChild(1).gameObject);
             GameSceneManager.score++;
-            gameManager.spawnPickUp();
+            gameManager.SpawnPickUp();
             drivingSpeed = tempDrivingSpeed;
         }
     }
