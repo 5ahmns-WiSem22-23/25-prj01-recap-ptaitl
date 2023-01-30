@@ -2,6 +2,8 @@
 
 This game was created in the context of the MTIN lessons with Prof. Meerwald-Stadler, Dipl.-Ing. Susanne of the HTL Salzburg. (School year 2022/23)
 
+> **Note:** Before going into detail about this project, please note that you should set the game's aspect ratio to 16:9 before playing/testing the game in Unity. Otherwise shifted layouts may occur.
+
 ## Assignment
 
 An object (player) is controlled by arrow keys (up,down,left,right) or WASD. The object should always be in the center of the screen.
